@@ -1,36 +1,45 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import Clock from 'react-live-clock';
+import moment from 'moment';
+import 'moment-timezone';
 import axios from "axios";
 
 export default function Time() {
   const [homeTime, setHomeTime] = useState('');
   const [awayTime, setAwayTime] = useState('');
+  const intervalIdRef = useRef(null);
+  const timeoutIdRef = useRef(null);
 
   useEffect(() => {
-    (async () => {
+    const fetchTimes = async () => {
       try {
         const response = await axios.post('http://192.168.1.73:3000/time', { home: 'America/Denver', away: 'America/Panama' });
         const isoTimes = response.data;
 
-        const homeTime = new Date(isoTimes.homeTime).toLocaleTimeString('en-US', {
-          hour: 'numeric',
-          minute: 'numeric',
-          hour12: true
-        });
-        const awayTime = new Date(isoTimes.awayTime).toLocaleTimeString('en-US', {
-          hour: 'numeric',
-          minute: 'numeric',
-          hour12: true
-        });
+        const homeTime = moment(isoTimes.homeTime).tz('America/Denver').format('h:mm A');
+        const awayTime = moment(isoTimes.awayTime).tz('America/Panama').format('h:mm A');
         setHomeTime(homeTime);
         setAwayTime(awayTime);
       } catch (error) {
         console.error('Error fetching times:', error);
       }
-    })();
+    };
+
+    fetchTimes();
+
+    const millisecondsToNextMinute = 60 * 1000 - Date.now() % (60 * 1000);
+    timeoutIdRef.current = setTimeout(() => {
+      fetchTimes();
+      intervalIdRef.current = setInterval(fetchTimes, 60 * 1000); // update every minute
+    }, millisecondsToNextMinute);
+
+    // Clean up on unmount
+    return () => {
+      clearTimeout(timeoutIdRef.current);
+      clearInterval(intervalIdRef.current);
+    };
   }, []); // when settings are changed
-
-
 
 
   return (
