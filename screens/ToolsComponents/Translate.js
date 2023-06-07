@@ -4,6 +4,7 @@ import testImg from '../../assets/favicon.png';
 import axios from "axios";
 
 
+
 export default function Translate() {
   const [inputs, setInputs] = useState({
     home: '',
