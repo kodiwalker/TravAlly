@@ -5,7 +5,7 @@ import axios from "axios";
 
 
 
-export default function Translate() {
+export default function Translate({ homeLang, awayLang }) {
   const [inputs, setInputs] = useState({
     home: '',
     away: ''
@@ -31,7 +31,7 @@ export default function Translate() {
       away: 'Translating...'
     })
     try {
-      const translated = await axios.post('http://192.168.1.73:3000/translate', { text: inputs.home, target: 'es' })
+      const translated = await axios.post('http://192.168.1.73:3000/translate', { text: inputs.home, target: awayLang }, { timeout: 3000 })
 
       setInputs({
         ...inputs,
@@ -39,8 +39,8 @@ export default function Translate() {
       })
     } catch (e) {
       setInputs({
-        home: '',
-        away: ''
+        ...inputs,
+        away: 'Failed to translate. Please check your submission and try again.'
       })
     }
   }
@@ -51,7 +51,7 @@ export default function Translate() {
       home: 'Translating...'
     })
     try {
-      const translated = await axios.post('http://192.168.1.73:3000/translate', { text: inputs.away, target: 'en' })
+      const translated = await axios.post('http://192.168.1.73:3000/translate', { text: inputs.away, target: homeLang }, { timeout: 3000 })
 
       setInputs({
         ...inputs,
@@ -59,8 +59,8 @@ export default function Translate() {
       })
     } catch (e) {
       setInputs({
-        home: '',
-        away: ''
+        ...inputs,
+        home: 'Failed to translate. Please check your submission and try again.'
       })
     }
   }
@@ -77,7 +77,7 @@ export default function Translate() {
 
       <View style={styles.inputContainer}>
 
-        <TextInput style={styles.input} maxLength={300} multiline={true} onSubmitEditing={handleAwayTranslate} returnKeyType='done' blurOnSubmit={true} value={inputs.away} onChangeText={handleAwayChange}></TextInput>
+        <TextInput style={styles.input} maxLength={300} multiline={true} onSubmitEditing={handleAwayTranslate} returnKeyType='done' blurOnSubmit={true} value={inputs.away} onChangeText={handleAwayChange} autoCorrect={false}></TextInput>
 
         <Image source={testImg}></Image>
       </View>

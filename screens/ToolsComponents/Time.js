@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import Clock from 'react-live-clock';
 import moment from 'moment';
 import 'moment-timezone';
 import axios from "axios";
 
-export default function Time() {
+export default function Time({ homeTZ, awayTZ }) {
   const [homeTime, setHomeTime] = useState('');
   const [awayTime, setAwayTime] = useState('');
   const intervalIdRef = useRef(null);
@@ -14,7 +13,7 @@ export default function Time() {
   useEffect(() => {
     const fetchTimes = async () => {
       try {
-        const response = await axios.post('http://192.168.1.73:3000/time', { home: 'America/Denver', away: 'America/Panama' });
+        const response = await axios.post('http://192.168.1.73:3000/time', { home: homeTZ, away: awayTZ });
         const isoTimes = response.data;
 
         const homeTime = moment(isoTimes.homeTime).tz('America/Denver').format('h:mm A');
