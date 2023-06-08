@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, Image, TextInput, StyleSheet } from 'react-native';
-import testImg from '../../assets/favicon.png';
 import axios from "axios";
+import { AppContext } from "../../Context";
+import iso6391 from 'iso-639-1';
+import { AntDesign } from '@expo/vector-icons';
 
 
-
-export default function Translate({ homeLang, awayLang }) {
+export default function Translate() {
+  const { homeLang, awayLang } = useContext(AppContext);
   const [inputs, setInputs] = useState({
     home: '',
     away: ''
@@ -39,8 +41,8 @@ export default function Translate({ homeLang, awayLang }) {
       })
     } catch (e) {
       setInputs({
-        ...inputs,
-        away: 'Failed to translate. Please check your submission and try again.'
+        home: inputs.home,
+        away: inputs.away
       })
     }
   }
@@ -68,42 +70,68 @@ export default function Translate({ homeLang, awayLang }) {
 
   return (
     <>
-      <View style={styles.inputContainer}>
-        <Image source={testImg}></Image>
+      <Text style={styles.heading}>Language</Text>
 
-        <TextInput style={styles.input} maxLength={300} multiline={true} onSubmitEditing={handleHomeTranslate} returnKeyType='done' blurOnSubmit={true} value={inputs.home} onChangeText={handleHomeChange}></TextInput>
+      <View style={styles.homeField}>
+        <AntDesign name="back" size={28} style={{ color: be, transform: [{ rotate: '-90deg' }] }} />
 
+        <View style={styles.inputContainer}>
+          <Text style={{ fontSize: 16, fontWeight: 'bold', color: be, marginBottom: 5 }}>{iso6391.getName(homeLang)}</Text>
+
+          <TextInput style={styles.input} maxLength={300} multiline={true} onSubmitEditing={handleHomeTranslate} returnKeyType='done' blurOnSubmit={true} value={inputs.home} onChangeText={handleHomeChange}></TextInput>
+        </View>
       </View>
 
-      <View style={styles.inputContainer}>
 
-        <TextInput style={styles.input} maxLength={300} multiline={true} onSubmitEditing={handleAwayTranslate} returnKeyType='done' blurOnSubmit={true} value={inputs.away} onChangeText={handleAwayChange} autoCorrect={false}></TextInput>
+      <View style={styles.awayField}>
+        <View style={styles.inputContainer}>
+          <TextInput style={styles.input} maxLength={300} multiline={true} onSubmitEditing={handleAwayTranslate} returnKeyType='done' blurOnSubmit={true} value={inputs.away} onChangeText={handleAwayChange} autoCorrect={false}></TextInput>
 
-        <Image source={testImg}></Image>
+          <Text style={{ fontSize: 16, fontWeight: 'bold', color: be, marginTop: 5 }}>{iso6391.getName(awayLang)}</Text>
+        </View>
+
+        <AntDesign name="back" size={28} style={{ color: be, transform: [{ rotate: '90deg' }] }} />
       </View>
+
     </>
   )
 }
 
-const bl = '#0D3B66';
-const be = '#FAF0CA';
-const ye = '#F4D35E';
-const or = '#EE964B';
-const re = '#F95738';
+const bl = '#2A9D8F';
+const db = '#264653';
+const be = '#F4F1DE';
+const or = '#E76F51';
 
 const styles = StyleSheet.create({
+  heading: {
+    color: be,
+    fontSize: 28,
+    fontWeight: 200,
+    letterSpacing: 10,
+    paddingLeft: 10,
+    paddingTop: 5
+  },
   inputContainer: {
-    flexDirection: 'row',
-    width: '95%',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
   input: {
     backgroundColor: be,
     color: bl,
-    width: '80%',
+    width: 300,
     height: 54,
     borderRadius: 8,
     fontSize: 18
+  },
+  homeField: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'flex-end'
+  },
+  awayField: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    paddingBottom: 5
   }
 });

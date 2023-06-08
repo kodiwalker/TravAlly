@@ -1,13 +1,30 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, Image, TextInput, StyleSheet } from 'react-native';
-import testImg from '../../assets/favicon.png';
 import axios from "axios";
+import { AppContext } from "../../Context";
+import { Octicons } from '@expo/vector-icons';
 
-export default function Currency({ homeRate, awayRate }) {
+export default function Currency() {
+  const { homeCurrency, awayCurrency, homeFlag, setHomeFlag, awayFlag, setAwayFlag } = useContext(AppContext);
+  const [homeRate, setHomeRate] = useState();
+  const [awayRate, setAwayRate] = useState();
   const [inputs, setInputs] = useState({
     home: '',
     away: ''
   });
+
+  useEffect(() => {
+
+    const getRates = async () => {
+      const ratesRes = await axios.post('http://192.168.1.73:3000/convert', { home: homeCurrency, away: awayCurrency }, { timeout: 3000 });
+      setHomeRate(ratesRes.data.homeRateData.conversion_rate);
+      setAwayRate(ratesRes.data.awayRateData.conversion_rate);
+      setAwayFlag(ratesRes.data.homeRateData.target_data.flag_url);
+      setHomeFlag(ratesRes.data.awayRateData.target_data.flag_url);
+    }
+    getRates();
+
+  }, [homeCurrency, awayCurrency])
 
   useEffect(() => {
     setInputs({
@@ -44,41 +61,72 @@ export default function Currency({ homeRate, awayRate }) {
     }
   }
 
-
   return (
     <>
-      <View style={styles.inputContainer}>
-        <Image source={testImg}></Image>
-        <TextInput style={styles.input} keyboardType="numeric" maxLength={12} textAlign='center' value={inputs.home} onChangeText={handleHomeConvert}></TextInput>
-      </View>
+      <Text style={styles.heading}>Currency</Text>
+
 
       <View style={styles.inputContainer}>
-        <TextInput style={styles.input} keyboardType="numeric" maxLength={12} textAlign='center' value={inputs.away} onChangeText={handleAwayConvert}></TextInput>
-        <Image source={testImg}></Image>
+
+        <View style={styles.bottom}>
+          <Image source={{ uri: homeFlag }} style={{ width: 20, height: 20 }} resizeMode="contain"></Image>
+          <TextInput style={styles.input} keyboardType="numeric" maxLength={10} textAlign='center' value={inputs.home} onChangeText={handleHomeConvert}></TextInput>
+
+          <Octicons name="arrow-both" size={28} color={db} />
+
+          <TextInput style={styles.input} keyboardType="numeric" maxLength={12} textAlign='center' value={inputs.away} onChangeText={handleAwayConvert}></TextInput>
+          <Image source={{ uri: awayFlag }} style={{ width: 20, height: 20 }} resizeMode="contain"></Image>
+        </View>
+
+      </View>
+
+      <View style={styles.top}>
+        <Text style={{ fontSize: 16, fontWeight: 'bold', color: be }}>{homeCurrency}</Text>
+        <Text style={{ fontSize: 16, fontWeight: 'bold', color: be }}>{awayCurrency}</Text>
       </View>
     </>
   )
 }
 
-const bl = '#0D3B66';
-const be = '#FAF0CA';
-const ye = '#F4D35E';
-const or = '#EE964B';
-const re = '#F95738';
+const bl = '#2A9D8F';
+const db = '#264653';
+const be = '#F4F1DE';
+const or = '#E76F51';
 
 const styles = StyleSheet.create({
+  heading: {
+    color: be,
+    fontSize: 28,
+    fontWeight: 200,
+    letterSpacing: 10,
+    paddingLeft: 10,
+    paddingTop: 5
+  },
   inputContainer: {
-    flexDirection: 'row',
-    width: '95%',
+    width: '89%',
     justifyContent: 'space-between',
     alignItems: 'center',
+    backgroundColor: be,
+    borderRadius: 8,
+  },
+  bottom: {
+    flexDirection: 'row',
+    width: '89%',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: be,
+    borderRadius: 8
+  },
+  top: {
+    width: '75%',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
   },
   input: {
-    backgroundColor: be,
-    color: bl,
-    width: '50%',
+    color: db,
+    width: 100,
     height: 40,
     borderRadius: 8,
-    fontSize: 22
+    fontSize: 18
   }
 });
