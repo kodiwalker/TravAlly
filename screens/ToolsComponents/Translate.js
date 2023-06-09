@@ -13,6 +13,13 @@ export default function Translate() {
     away: ''
   });
 
+  useEffect(() => {
+    setInputs({
+      away: '',
+      home: ''
+    })
+  }, [homeLang, awayLang])
+
   const handleHomeChange = text => {
     setInputs({
       ...inputs,
@@ -117,11 +124,12 @@ const styles = StyleSheet.create({
   },
   input: {
     backgroundColor: be,
-    color: bl,
+    color: db,
     width: 300,
     height: 54,
     borderRadius: 8,
-    fontSize: 18
+    fontSize: 18,
+    textAlign: 'center'
   },
   homeField: {
     flexDirection: 'row',

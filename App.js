@@ -1,6 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useState, useEffect } from 'react';
+import { StatusBar } from 'react-native';
 import ToolsScreen from './screens/ToolsScreen';
 import GuideScreen from './screens/GuideScreen';
 import SettingsScreen from './screens/SettingsScreen';
@@ -40,48 +41,51 @@ export default function App() {
 
 
   return (
-    <AppContext.Provider value={{ homeTZ, setHomeTZ, awayTZ, setAwayTZ, homeCountry, setHomeCountry, awayCountry, setAwayCountry, homeCurrency, setHomeCurrency, awayCurrency, setAwayCurrency, homeRate, setHomeRate, awayRate, setAwayRate, homeLang, setHomeLang, awayLang, setAwayLang, homeFlag, setHomeFlag, awayFlag, setAwayFlag, countryData }}>
-      <NavigationContainer>
-        <Tab.Navigator
-          initialRouteName="Tools"
-          screenOptions={{
-            headerShown: false,
-            tabBarActiveTintColor: '#264653',
-            tabBarInactiveTintColor: '#2A9D8F',
-            tabBarStyle: {
-              backgroundColor: '#F4F1DE',
-              paddingBottom: 5,
-              borderTopColor: 'transparent',
-              shadowOpacity: 0
-            },
-            tabBarShowLabel: false,
-          }}
-        >
-          <Tab.Screen name="Tools" component={ToolsScreen}
-            options={{
-              tabBarIcon: ({ color }) => (
-                <Entypo name="tools" color={color} size={42} />
-              )
+    <>
+      <StatusBar barStyle="dark-content" />
+      <AppContext.Provider value={{ homeTZ, setHomeTZ, awayTZ, setAwayTZ, homeCountry, setHomeCountry, awayCountry, setAwayCountry, homeCurrency, setHomeCurrency, awayCurrency, setAwayCurrency, homeRate, setHomeRate, awayRate, setAwayRate, homeLang, setHomeLang, awayLang, setAwayLang, homeFlag, setHomeFlag, awayFlag, setAwayFlag, countryData }}>
+        <NavigationContainer>
+          <Tab.Navigator
+            initialRouteName="Tools"
+            screenOptions={{
+              headerShown: false,
+              tabBarActiveTintColor: '#264653',
+              tabBarInactiveTintColor: '#2A9D8F',
+              tabBarStyle: {
+                backgroundColor: '#F4F1DE',
+                paddingBottom: 5,
+                borderTopColor: 'transparent',
+                shadowOpacity: 0
+              },
+              tabBarShowLabel: false,
             }}
-          />
+          >
+            <Tab.Screen name="Tools" component={ToolsScreen}
+              options={{
+                tabBarIcon: ({ color }) => (
+                  <Entypo name="tools" color={color} size={42} />
+                )
+              }}
+            />
 
-          <Tab.Screen name="Guide" component={GuideScreen}
-            options={{
-              tabBarIcon: ({ color }) => (
-                <MaterialCommunityIcons name="assistant" size={42} color={color} />
-              )
-            }}
-          />
+            <Tab.Screen name="Guide" component={GuideScreen}
+              options={{
+                tabBarIcon: ({ color }) => (
+                  <MaterialCommunityIcons name="assistant" size={42} color={color} />
+                )
+              }}
+            />
 
-          <Tab.Screen name="Settings" component={SettingsScreen}
-            options={{
-              tabBarIcon: ({ color }) => (
-                <Ionicons name="ios-settings-sharp" size={42} color={color} />
-              )
-            }}
-          />
-        </Tab.Navigator>
-      </NavigationContainer>
-    </AppContext.Provider>
+            <Tab.Screen name="Settings" component={SettingsScreen}
+              options={{
+                tabBarIcon: ({ color }) => (
+                  <Ionicons name="ios-settings-sharp" size={42} color={color} />
+                )
+              }}
+            />
+          </Tab.Navigator>
+        </NavigationContainer>
+      </AppContext.Provider>
+    </>
   );
 }
