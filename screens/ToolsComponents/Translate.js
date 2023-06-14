@@ -1,3 +1,4 @@
+import { IP } from '@env';
 import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, Image, TextInput, StyleSheet } from 'react-native';
 import axios from "axios";
@@ -8,6 +9,7 @@ import { AntDesign } from '@expo/vector-icons';
 
 export default function Translate() {
   const { homeLang, awayLang } = useContext(AppContext);
+  const [focus, setFocus] = React.useState({});
   const [inputs, setInputs] = useState({
     home: '',
     away: ''
@@ -40,7 +42,7 @@ export default function Translate() {
       away: 'Translating...'
     })
     try {
-      const translated = await axios.post('http://192.168.1.73:3000/translate', { text: inputs.home, target: awayLang }, { timeout: 3000 })
+      const translated = await axios.post(`http://${IP}:3000/translate`, { text: inputs.home, target: awayLang }, { timeout: 3000 })
 
       setInputs({
         ...inputs,
@@ -60,7 +62,7 @@ export default function Translate() {
       home: 'Translating...'
     })
     try {
-      const translated = await axios.post('http://192.168.1.73:3000/translate', { text: inputs.away, target: homeLang }, { timeout: 3000 })
+      const translated = await axios.post(`http://${IP}:3000/translate`, { text: inputs.away, target: homeLang }, { timeout: 3000 })
 
       setInputs({
         ...inputs,
@@ -74,6 +76,17 @@ export default function Translate() {
     }
   }
 
+  const getPickerStyle = (id) => ({
+    backgroundColor: be,
+    color: db,
+    width: 300,
+    height: 54,
+    borderRadius: 8,
+    fontSize: 18,
+    textAlign: 'center',
+    borderWidth: 3,
+    borderColor: focus[id] ? '#2A9D8F' : 'white',
+  });
 
   return (
     <>
@@ -85,14 +98,20 @@ export default function Translate() {
         <View style={styles.inputContainer}>
           <Text style={{ fontSize: 16, fontWeight: 'bold', color: be, marginBottom: 5 }}>{iso6391.getName(homeLang)}</Text>
 
-          <TextInput style={styles.input} maxLength={300} multiline={true} onSubmitEditing={handleHomeTranslate} returnKeyType='done' blurOnSubmit={true} value={inputs.home} onChangeText={handleHomeChange}></TextInput>
+          <TextInput style={getPickerStyle('picker1')} maxLength={300} multiline={true} onSubmitEditing={handleHomeTranslate} returnKeyType='done' blurOnSubmit={true} value={inputs.home} onChangeText={handleHomeChange}
+            onFocus={() => setFocus(prev => ({ ...prev, picker1: true }))}
+            onBlur={() => setFocus(prev => ({ ...prev, picker1: false }))}
+          ></TextInput>
         </View>
       </View>
 
 
       <View style={styles.awayField}>
         <View style={styles.inputContainer}>
-          <TextInput style={styles.input} maxLength={300} multiline={true} onSubmitEditing={handleAwayTranslate} returnKeyType='done' blurOnSubmit={true} value={inputs.away} onChangeText={handleAwayChange} autoCorrect={false}></TextInput>
+          <TextInput style={getPickerStyle('picker2')} maxLength={300} multiline={true} onSubmitEditing={handleAwayTranslate} returnKeyType='done' blurOnSubmit={true} value={inputs.away} onChangeText={handleAwayChange} autoCorrect={false}
+            onFocus={() => setFocus(prev => ({ ...prev, picker2: true }))}
+            onBlur={() => setFocus(prev => ({ ...prev, picker2: false }))}
+          ></TextInput>
 
           <Text style={{ fontSize: 16, fontWeight: 'bold', color: be, marginTop: 5 }}>{iso6391.getName(awayLang)}</Text>
         </View>
@@ -106,7 +125,7 @@ export default function Translate() {
 
 const bl = '#2A9D8F';
 const db = '#264653';
-const be = '#F4F1DE';
+const be = 'white';
 const or = '#E76F51';
 
 const styles = StyleSheet.create({
@@ -121,15 +140,6 @@ const styles = StyleSheet.create({
   inputContainer: {
     justifyContent: 'space-between',
     alignItems: 'center',
-  },
-  input: {
-    backgroundColor: be,
-    color: db,
-    width: 300,
-    height: 54,
-    borderRadius: 8,
-    fontSize: 18,
-    textAlign: 'center'
   },
   homeField: {
     flexDirection: 'row',

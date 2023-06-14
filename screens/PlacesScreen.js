@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, View, Text, StyleSheet } from 'react-native';
 import { AppContext } from "../Context";
 
-export default function GuideScreen() {
+export default function PlacesScreen() {
 
   return (
     <KeyboardAvoidingView style={styles.outer} behavior="position">
@@ -10,7 +10,7 @@ export default function GuideScreen() {
         <View style={styles.container}>
 
           <View style={styles.titleCard}>
-            <Text style={styles.titleText}>Native Guide</Text>
+            <Text style={styles.titleText}>Top Places</Text>
           </View>
 
           <View style={styles.mainContainer}>
@@ -45,13 +45,14 @@ const styles = StyleSheet.create({
     backgroundColor: be,
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingBottom: 40
+    paddingBottom: 40,
   },
   titleCard: {
     backgroundColor: be,
     height: 80,
     justifyContent: 'center',
     alignItems: 'center',
+
   },
   titleText: {
     color: db,

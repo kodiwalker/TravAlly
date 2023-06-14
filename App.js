@@ -1,3 +1,4 @@
+import { IP } from '@env';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useState, useEffect } from 'react';
@@ -5,6 +6,7 @@ import { StatusBar } from 'react-native';
 import ToolsScreen from './screens/ToolsScreen';
 import GuideScreen from './screens/GuideScreen';
 import SettingsScreen from './screens/SettingsScreen';
+import PlacesScreen from "./screens/PlacesScreen";
 import axios from "axios";
 import { Entypo } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -32,7 +34,7 @@ export default function App() {
     // loadData();
     const initialAPICalls = async () => {
 
-      const countryRes = await axios.get('http://192.168.1.73:3000/countrydata');
+      const countryRes = await axios.get(`http://${IP}:3000/countrydata`);
       setCountryData(countryRes.data);
     }
 
@@ -52,7 +54,7 @@ export default function App() {
               tabBarActiveTintColor: '#264653',
               tabBarInactiveTintColor: '#2A9D8F',
               tabBarStyle: {
-                backgroundColor: '#F4F1DE',
+                backgroundColor: 'white',
                 paddingBottom: 5,
                 borderTopColor: 'transparent',
                 shadowOpacity: 0
@@ -72,6 +74,14 @@ export default function App() {
               options={{
                 tabBarIcon: ({ color }) => (
                   <MaterialCommunityIcons name="assistant" size={42} color={color} />
+                )
+              }}
+            />
+
+            <Tab.Screen name="Places" component={PlacesScreen}
+              options={{
+                tabBarIcon: ({ color }) => (
+                  <Entypo name="location" size={42} color={color} />
                 )
               }}
             />

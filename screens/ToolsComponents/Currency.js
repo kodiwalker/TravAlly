@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { IP } from '@env';
 import { View, Text, Image, TextInput, StyleSheet } from 'react-native';
 import axios from "axios";
 import { AppContext } from "../../Context";
@@ -8,6 +9,7 @@ export default function Currency() {
   const { homeCurrency, awayCurrency, homeFlag, setHomeFlag, awayFlag, setAwayFlag } = useContext(AppContext);
   const [homeRate, setHomeRate] = useState();
   const [awayRate, setAwayRate] = useState();
+  const [focus, setFocus] = React.useState({});
   const [inputs, setInputs] = useState({
     home: '',
     away: ''
@@ -16,7 +18,7 @@ export default function Currency() {
   useEffect(() => {
 
     const getRates = async () => {
-      const ratesRes = await axios.post('http://192.168.1.73:3000/convert', { home: homeCurrency, away: awayCurrency }, { timeout: 3000 });
+      const ratesRes = await axios.post(`http://${IP}:3000/convert`, { home: homeCurrency, away: awayCurrency }, { timeout: 3000 });
       setHomeRate(ratesRes.data.homeRateData.conversion_rate);
       setAwayRate(ratesRes.data.awayRateData.conversion_rate);
       setAwayFlag(ratesRes.data.homeRateData.target_data.flag_url);
@@ -61,6 +63,16 @@ export default function Currency() {
     }
   }
 
+  const getPickerStyle = (id) => ({
+    color: db,
+    width: 100,
+    height: 40,
+    borderRadius: 8,
+    fontSize: 18,
+    borderWidth: 3,
+    borderColor: focus[id] ? '#2A9D8F' : 'white',
+  });
+
   return (
     <>
       <Text style={styles.heading}>Currency</Text>
@@ -70,11 +82,17 @@ export default function Currency() {
 
         <View style={styles.bottom}>
           <Image source={{ uri: homeFlag }} style={{ width: 20, height: 20 }} resizeMode="contain"></Image>
-          <TextInput style={styles.input} keyboardType="numeric" maxLength={10} textAlign='center' value={inputs.home} onChangeText={handleHomeConvert}></TextInput>
+          <TextInput style={getPickerStyle('picker1')} keyboardType="numeric" maxLength={10} textAlign='center' value={inputs.home} onChangeText={handleHomeConvert}
+            onFocus={() => setFocus(prev => ({ ...prev, picker1: true }))}
+            onBlur={() => setFocus(prev => ({ ...prev, picker1: false }))}
+          ></TextInput>
 
           <Octicons name="arrow-both" size={28} color={db} />
 
-          <TextInput style={styles.input} keyboardType="numeric" maxLength={12} textAlign='center' value={inputs.away} onChangeText={handleAwayConvert}></TextInput>
+          <TextInput style={getPickerStyle('picker2')} keyboardType="numeric" maxLength={12} textAlign='center' value={inputs.away} onChangeText={handleAwayConvert}
+            onFocus={() => setFocus(prev => ({ ...prev, picker2: true }))}
+            onBlur={() => setFocus(prev => ({ ...prev, picker2: false }))}
+          ></TextInput>
           <Image source={{ uri: awayFlag }} style={{ width: 20, height: 20 }} resizeMode="contain"></Image>
         </View>
 
@@ -90,7 +108,7 @@ export default function Currency() {
 
 const bl = '#2A9D8F';
 const db = '#264653';
-const be = '#F4F1DE';
+const be = 'white';
 const or = '#E76F51';
 
 const styles = StyleSheet.create({
@@ -122,11 +140,4 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
   },
-  input: {
-    color: db,
-    width: 100,
-    height: 40,
-    borderRadius: 8,
-    fontSize: 18
-  }
 });

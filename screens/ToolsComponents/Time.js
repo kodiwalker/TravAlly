@@ -1,9 +1,11 @@
+import { IP } from '@env';
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import moment from 'moment';
 import 'moment-timezone';
 import axios from "axios";
 import { AppContext } from "../../Context";
+import { Octicons } from '@expo/vector-icons';
 
 export default function Time() {
   const { homeTZ, awayTZ } = useContext(AppContext);
@@ -16,7 +18,7 @@ export default function Time() {
   useEffect(() => {
     const fetchTimes = async () => {
       try {
-        const response = await axios.post('http://192.168.1.73:3000/time', { home: homeTZ, away: awayTZ });
+        const response = await axios.post(`http://${IP}:3000/time`, { home: homeTZ, away: awayTZ });
         const isoTimes = response.data;
 
         const homeTime = moment(isoTimes.homeTime).format('h:mm A');
@@ -59,6 +61,8 @@ export default function Time() {
           <Text style={{ color: be, fontWeight: 'bold' }}>{homeTZ}</Text>
         </View>
 
+        {/* <Octicons name="arrow-both" size={28} color={be} style={{ paddingBottom: 20 }} /> */}
+
         <View style={styles.timeContainer}>
           <View style={styles.textContainer}>
             <Text style={styles.timeText}>{awayTime}</Text>
@@ -73,7 +77,7 @@ export default function Time() {
 
 const bl = '#2A9D8F';
 const db = '#264653';
-const be = '#F4F1DE';
+const be = 'white';
 const or = '#E76F51';
 
 const styles = StyleSheet.create({

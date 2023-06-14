@@ -4,6 +4,8 @@ import Time from './ToolsComponents/Time';
 import Currency from './ToolsComponents/Currency'
 import Translate from './ToolsComponents/Translate';
 import { AppContext } from "../Context";
+import { AntDesign } from '@expo/vector-icons';
+
 
 export default function ToolsScreen() {
   const { homeCountry, awayCountry } = useContext(AppContext);
@@ -14,7 +16,15 @@ export default function ToolsScreen() {
         <View style={styles.container}>
 
           <View style={styles.countriesCard}>
-            <Text style={styles.countryText}>{homeCountry} | {awayCountry}</Text>
+            <View style={styles.homeField}>
+              {/* <AntDesign name="back" size={28} style={{ color: db, transform: [{ rotate: '-90deg' }] }} /> */}
+              <Text style={styles.homeText}>{homeCountry}</Text>
+            </View>
+
+            <View style={styles.awayField}>
+              <Text style={styles.awayText}>{awayCountry}</Text>
+              {/* <AntDesign name="back" size={28} style={{ color: db, transform: [{ rotate: '90deg' }] }} /> */}
+            </View>
           </View>
 
           <View style={styles.timeCard}>
@@ -38,7 +48,7 @@ export default function ToolsScreen() {
 
 const bl = '#2A9D8F';
 const db = '#264653';
-const be = '#F4F1DE';
+const be = 'white';
 const or = '#E76F51';
 
 const styles = StyleSheet.create({
@@ -59,23 +69,28 @@ const styles = StyleSheet.create({
     paddingBottom: 40
   },
   countriesCard: {
-    backgroundColor: be,
-    // width: '90%',
-    height: 80,
     justifyContent: 'center',
+    paddingTop: 12,
     alignItems: 'center',
-    borderRadius: 8,
-    borderColor: bl,
+    width: '95%'
   },
-  countryText: {
+  homeText: {
     color: db,
-    fontSize: 28
+    fontSize: 28,
+    textAlign: 'left'
+    // alignSelf: 'flex-start'
+  },
+  awayText: {
+    color: db,
+    fontSize: 28,
+    textAlign: 'right'
+    // alignSelf: 'flex-end'
   },
   timeCard: {
     backgroundColor: db,
     width: 360,
     height: 120,
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     alignItems: 'center',
     borderRadius: 8,
     shadowColor: '#000',
@@ -118,5 +133,15 @@ const styles = StyleSheet.create({
   },
   text: {
     color: be,
+  },
+  homeField: {
+    // width: '90%',
+    alignSelf: 'flex-start',
+    justifyContent: 'center',
+  },
+  awayField: {
+    alignSelf: 'flex-end',
+    justifyContent: 'center',
+    // width: '90%',
   }
 });

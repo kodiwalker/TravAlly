@@ -12,6 +12,8 @@ export default function SettingsScreen() {
   const [awayCountryCode, setAwayCountryCode] = useState('MX');
   const [awayTimezone, setAwayTimezone] = useState('America/Cancun');
 
+  const [focus, setFocus] = React.useState({});
+
   if (!countryData) {
     return <Text>Loading...</Text>
   }
@@ -62,6 +64,19 @@ export default function SettingsScreen() {
     setAwayTZ(value);
   }
 
+  const getPickerStyle = (id) => ({
+    inputIOS: {
+      textAlign: 'center',
+      fontSize: 28,
+      backgroundColor: be,
+      width: '85%',
+      borderRadius: 8,
+      alignSelf: 'center',
+      borderWidth: 3,
+      borderColor: focus[id] ? '#2A9D8F' : 'white',
+    }
+  });
+
   return (
     <KeyboardAvoidingView style={styles.outer} behavior="position">
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -76,7 +91,9 @@ export default function SettingsScreen() {
 
             <Text style={{ color: be, fontWeight: 'bold', alignSelf: 'flex-start', paddingLeft: 25 }}>Country</Text>
             <RNPickerSelect
-              style={{ inputIOS: styles.picker }}
+              onOpen={() => setFocus(prev => ({ ...prev, picker1: true }))}
+              onClose={() => setFocus(prev => ({ ...prev, picker1: false }))}
+              style={getPickerStyle('picker1')}
               items={countryItems}
               onValueChange={handleHomeCountryCodeChange}
               value={homeCountryCode}
@@ -85,7 +102,9 @@ export default function SettingsScreen() {
 
             <Text style={{ color: be, fontWeight: 'bold', alignSelf: 'flex-start', paddingLeft: 25 }}>Timezone</Text>
             <RNPickerSelect
-              style={{ inputIOS: styles.picker }}
+              onOpen={() => setFocus(prev => ({ ...prev, picker2: true }))}
+              onClose={() => setFocus(prev => ({ ...prev, picker2: false }))}
+              style={getPickerStyle('picker2')}
               items={homeTimezoneItems}
               onValueChange={handleHomeTimezoneChange}
               value={homeTimezone}
@@ -99,7 +118,9 @@ export default function SettingsScreen() {
 
             <Text style={{ color: be, fontWeight: 'bold', alignSelf: 'flex-start', paddingLeft: 25 }}>Country</Text>
             <RNPickerSelect
-              style={{ inputIOS: styles.picker }}
+              onOpen={() => setFocus(prev => ({ ...prev, picker3: true }))}
+              onClose={() => setFocus(prev => ({ ...prev, picker3: false }))}
+              style={getPickerStyle('picker3')}
               items={countryItems}
               onValueChange={handleAwayCountryCodeChange}
               value={awayCountryCode}
@@ -108,7 +129,9 @@ export default function SettingsScreen() {
 
             <Text style={{ color: be, fontWeight: 'bold', alignSelf: 'flex-start', paddingLeft: 25 }}>Timezone</Text>
             <RNPickerSelect
-              style={{ inputIOS: styles.picker }}
+              onOpen={() => setFocus(prev => ({ ...prev, picker4: true }))}
+              onClose={() => setFocus(prev => ({ ...prev, picker4: false }))}
+              style={getPickerStyle('picker4')}
               items={awayTimezoneItems}
               onValueChange={handleAwayTimezoneChange}
               value={awayTimezone}
@@ -131,7 +154,7 @@ export default function SettingsScreen() {
 
 const bl = '#2A9D8F';
 const db = '#264653';
-const be = '#F4F1DE';
+const be = 'white';
 const or = '#E76F51';
 
 const styles = StyleSheet.create({
@@ -219,12 +242,4 @@ const styles = StyleSheet.create({
   text: {
     color: be,
   },
-  picker: {
-    textAlign: 'center',
-    fontSize: 28,
-    backgroundColor: be,
-    width: '85%',
-    borderRadius: 8,
-    alignSelf: 'center'
-  }
 });
