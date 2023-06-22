@@ -38,3 +38,8 @@ Set your home and away country along with your time zone in the settings and you
 - User Account: Syncs Settings, Native Guide chat history, and favorited Top Places across devices.
 - Widgets: View regularly updated conversion rates and phrases right on your home screen.
 
+
+## Demo
+
+<img src="/assets/TravAlly-Beta-Demo.gif" width="250"/>
+
