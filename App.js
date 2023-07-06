@@ -12,6 +12,7 @@ import { Entypo } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { AppContext } from './Context';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 const Tab = createBottomTabNavigator();
 
 
@@ -54,10 +55,15 @@ export default function App() {
               tabBarActiveTintColor: '#264653',
               tabBarInactiveTintColor: '#2A9D8F',
               tabBarStyle: {
-                backgroundColor: 'white',
-                paddingBottom: 5,
+                backgroundColor: 'transparent',
+                paddingBottom: hp('1.5%'),
                 borderTopColor: 'transparent',
-                shadowOpacity: 0
+                shadowOpacity: 0,
+              },
+              tabBarItemStyle: {
+                justifyContent: 'center',
+                alignItems: 'center',
+                maxWidth: 300,
               },
               tabBarShowLabel: false,
             }}

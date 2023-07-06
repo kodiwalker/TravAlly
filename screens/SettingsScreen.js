@@ -1,7 +1,8 @@
 import React, { useContext, useState } from 'react';
-import { View, Text, Keyboard, StyleSheet, KeyboardAvoidingView, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, Keyboard, StyleSheet, KeyboardAvoidingView, TouchableWithoutFeedback, SafeAreaView } from 'react-native';
 import { AppContext } from "../Context";
 import RNPickerSelect from 'react-native-picker-select';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 export default function SettingsScreen() {
   const { setHomeTZ, setAwayTZ, setHomeCurrency, setAwayCurrency, setHomeLang, setAwayLang, countryData, setAwayCountry, setHomeCountry } = useContext(AppContext);
@@ -67,9 +68,10 @@ export default function SettingsScreen() {
   const getPickerStyle = (id) => ({
     inputIOS: {
       textAlign: 'center',
-      fontSize: 28,
+      fontSize: wp('7%'),
       backgroundColor: be,
-      width: '85%',
+      width: wp('85%'),
+      height: hp('5.5%'),
       borderRadius: 8,
       alignSelf: 'center',
       borderWidth: 3,
@@ -79,73 +81,75 @@ export default function SettingsScreen() {
 
   return (
     <KeyboardAvoidingView style={styles.outer} behavior="position">
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={styles.container}>
+      <SafeAreaView style={styles.outer}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={styles.container}>
 
-          <View style={styles.settingsCard}>
-            <Text style={styles.settingsText}>Settings</Text>
-          </View>
+            <View style={styles.settingsCard}>
+              <Text style={styles.settingsText}>Settings</Text>
+            </View>
 
-          <View style={styles.homeCard}>
-            <Text style={styles.heading}>Home</Text>
+            <View style={styles.homeCard}>
+              <Text style={styles.heading}>Home</Text>
 
-            <Text style={{ color: be, fontWeight: 'bold', alignSelf: 'flex-start', paddingLeft: 25 }}>Country</Text>
-            <RNPickerSelect
-              onOpen={() => setFocus(prev => ({ ...prev, picker1: true }))}
-              onClose={() => setFocus(prev => ({ ...prev, picker1: false }))}
-              style={getPickerStyle('picker1')}
-              items={countryItems}
-              onValueChange={handleHomeCountryCodeChange}
-              value={homeCountryCode}
-              placeholder={{}}
-            />
+              <Text style={styles.labelText}>Country</Text>
+              <RNPickerSelect
+                onOpen={() => setFocus(prev => ({ ...prev, picker1: true }))}
+                onClose={() => setFocus(prev => ({ ...prev, picker1: false }))}
+                style={getPickerStyle('picker1')}
+                items={countryItems}
+                onValueChange={handleHomeCountryCodeChange}
+                value={homeCountryCode}
+                placeholder={{}}
+              />
 
-            <Text style={{ color: be, fontWeight: 'bold', alignSelf: 'flex-start', paddingLeft: 25 }}>Timezone</Text>
-            <RNPickerSelect
-              onOpen={() => setFocus(prev => ({ ...prev, picker2: true }))}
-              onClose={() => setFocus(prev => ({ ...prev, picker2: false }))}
-              style={getPickerStyle('picker2')}
-              items={homeTimezoneItems}
-              onValueChange={handleHomeTimezoneChange}
-              value={homeTimezone}
-              disabled={!homeCountryCode}
-              placeholder={{}}
-            />
-          </View>
+              <Text style={styles.labelText}>Timezone</Text>
+              <RNPickerSelect
+                onOpen={() => setFocus(prev => ({ ...prev, picker2: true }))}
+                onClose={() => setFocus(prev => ({ ...prev, picker2: false }))}
+                style={getPickerStyle('picker2')}
+                items={homeTimezoneItems}
+                onValueChange={handleHomeTimezoneChange}
+                value={homeTimezone}
+                disabled={!homeCountryCode}
+                placeholder={{}}
+              />
+            </View>
 
-          <View style={styles.awayCard}>
-            <Text style={styles.heading}>Away</Text>
+            <View style={styles.awayCard}>
+              <Text style={styles.heading}>Away</Text>
 
-            <Text style={{ color: be, fontWeight: 'bold', alignSelf: 'flex-start', paddingLeft: 25 }}>Country</Text>
-            <RNPickerSelect
-              onOpen={() => setFocus(prev => ({ ...prev, picker3: true }))}
-              onClose={() => setFocus(prev => ({ ...prev, picker3: false }))}
-              style={getPickerStyle('picker3')}
-              items={countryItems}
-              onValueChange={handleAwayCountryCodeChange}
-              value={awayCountryCode}
-              placeholder={{}}
-            />
+              <Text style={styles.labelText}>Country</Text>
+              <RNPickerSelect
+                onOpen={() => setFocus(prev => ({ ...prev, picker3: true }))}
+                onClose={() => setFocus(prev => ({ ...prev, picker3: false }))}
+                style={getPickerStyle('picker3')}
+                items={countryItems}
+                onValueChange={handleAwayCountryCodeChange}
+                value={awayCountryCode}
+                placeholder={{}}
+              />
 
-            <Text style={{ color: be, fontWeight: 'bold', alignSelf: 'flex-start', paddingLeft: 25 }}>Timezone</Text>
-            <RNPickerSelect
-              onOpen={() => setFocus(prev => ({ ...prev, picker4: true }))}
-              onClose={() => setFocus(prev => ({ ...prev, picker4: false }))}
-              style={getPickerStyle('picker4')}
-              items={awayTimezoneItems}
-              onValueChange={handleAwayTimezoneChange}
-              value={awayTimezone}
-              disabled={!awayCountryCode}
-              placeholder={{}}
-            />
-          </View>
+              <Text style={styles.labelText}>Timezone</Text>
+              <RNPickerSelect
+                onOpen={() => setFocus(prev => ({ ...prev, picker4: true }))}
+                onClose={() => setFocus(prev => ({ ...prev, picker4: false }))}
+                style={getPickerStyle('picker4')}
+                items={awayTimezoneItems}
+                onValueChange={handleAwayTimezoneChange}
+                value={awayTimezone}
+                disabled={!awayCountryCode}
+                placeholder={{}}
+              />
+            </View>
 
-          <View style={styles.accountCard}>
+            {/* <View style={styles.accountCard}>
             <Text style={styles.heading}>Account</Text>
-          </View>
+          </View> */}
 
-        </View>
-      </TouchableWithoutFeedback>
+          </View>
+        </TouchableWithoutFeedback>
+      </SafeAreaView>
     </KeyboardAvoidingView>
   )
 }
@@ -160,19 +164,16 @@ const or = '#E76F51';
 const styles = StyleSheet.create({
   heading: {
     color: be,
-    fontSize: 28,
+    fontSize: wp('7%'),
     fontWeight: 200,
-    letterSpacing: 10,
-    paddingLeft: 10,
-    paddingTop: 5
+    letterSpacing: 8,
+    paddingLeft: wp('2.5%'),
+    paddingTop: hp('1%'),
   },
   outer: {
-    flex: 1,
     flexGrow: 1,
     backgroundColor: be,
     alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingTop: 45
   },
   container: {
     flex: 1,
@@ -180,22 +181,22 @@ const styles = StyleSheet.create({
     backgroundColor: be,
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingBottom: 40
+    paddingBottom: hp('15%'),
   },
   settingsCard: {
     backgroundColor: be,
-    height: 80,
+    height: hp('10%'),
     justifyContent: 'center',
     alignItems: 'center',
   },
   settingsText: {
     color: db,
-    fontSize: 36
+    fontSize: wp('9%'),
   },
   homeCard: {
     backgroundColor: db,
-    width: 360,
-    height: 170,
+    width: wp('90%'),
+    height: hp('25%'),
     justifyContent: 'space-around',
     alignItems: 'center',
     paddingBottom: 10,
@@ -210,8 +211,8 @@ const styles = StyleSheet.create({
   },
   awayCard: {
     backgroundColor: db,
-    width: 360,
-    height: 170,
+    width: wp('90%'),
+    height: hp('25%'),
     justifyContent: 'space-around',
     alignItems: 'center',
     paddingBottom: 10,
@@ -226,8 +227,8 @@ const styles = StyleSheet.create({
   },
   accountCard: {
     backgroundColor: db,
-    width: 360,
-    height: 160,
+    width: wp('90%'),
+    height: hp('20%'),
     justifyContent: 'space-around',
     alignItems: 'center',
     borderRadius: 8,
@@ -238,6 +239,14 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.31,
     shadowRadius: 12,
+  },
+  labelText: {
+    color: be,
+    fontWeight: 'bold',
+    alignSelf: 'flex-start',
+    paddingLeft: wp('3%'),
+    paddingTop: hp('1%'),
+    fontSize: wp('3%'),
   },
   text: {
     color: be,

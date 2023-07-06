@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, View, Text, StyleSheet } from 'react-native';
 import { AppContext } from "../Context";
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 export default function PlacesScreen() {
 
@@ -33,56 +34,55 @@ const or = '#E76F51';
 const styles = StyleSheet.create({
   outer: {
     flex: 1,
-    flexGrow: 1,
     backgroundColor: be,
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingTop: 45
+    paddingTop: hp('5%')
   },
   container: {
     flex: 1,
-    flexGrow: 1,
+    width: wp('100%'),
     backgroundColor: be,
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingBottom: 40,
+    paddingBottom: hp('5%')
   },
   titleCard: {
     backgroundColor: be,
-    height: 80,
+    height: hp('10%'),
     justifyContent: 'center',
     alignItems: 'center',
-
+    width: wp('100%'),
   },
   titleText: {
     color: db,
-    fontSize: 36
+    fontSize: wp('10%')
   },
   homeCard: {
     backgroundColor: db,
-    width: 360,
-    height: 170,
+    width: wp('90%'),
+    height: hp('25%'),
     justifyContent: 'space-around',
     alignItems: 'center',
-    paddingBottom: 10,
-    borderRadius: 8,
+    paddingBottom: hp('1%'),
+    borderRadius: wp('2%'),
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
-      height: 12,
+      height: wp('3%'),
     },
     shadowOpacity: 0.31,
-    shadowRadius: 12,
+    shadowRadius: wp('3%'),
   },
   heading: {
     color: be,
-    fontSize: 28,
+    fontSize: wp('7%'),
     fontWeight: 200,
-    letterSpacing: 10,
-    paddingLeft: 10,
-    paddingTop: 5
+    letterSpacing: wp('3%'),
+    paddingLeft: wp('2.5%'),
+    paddingTop: hp('0.5%')
   },
   mainContainer: {
-    height: 375
+    height: hp('50%')
   }
 });

@@ -5,7 +5,7 @@ import moment from 'moment';
 import 'moment-timezone';
 import axios from "axios";
 import { AppContext } from "../../Context";
-import { Octicons } from '@expo/vector-icons';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 export default function Time() {
   const { homeTZ, awayTZ } = useContext(AppContext);
@@ -58,7 +58,7 @@ export default function Time() {
           <View style={styles.textContainer}>
             <Text style={styles.timeText}>{homeTime}</Text>
           </View>
-          <Text style={{ color: be, fontWeight: 'bold' }}>{homeTZ}</Text>
+          <Text style={styles.timeZoneText}>{homeTZ}</Text>
         </View>
 
         {/* <Octicons name="arrow-both" size={28} color={be} style={{ paddingBottom: 20 }} /> */}
@@ -67,7 +67,7 @@ export default function Time() {
           <View style={styles.textContainer}>
             <Text style={styles.timeText}>{awayTime}</Text>
           </View>
-          <Text style={{ color: be, fontWeight: 'bold' }}>{awayTZ}</Text>
+          <Text style={styles.timeZoneText}>{awayTZ}</Text>
         </View>
 
       </View>
@@ -83,21 +83,22 @@ const or = '#E76F51';
 const styles = StyleSheet.create({
   heading: {
     color: be,
-    fontSize: 28,
+    fontSize: wp('7%'),
     fontWeight: 200,
-    letterSpacing: 10,
-    paddingLeft: 10,
-    paddingTop: 5
+    letterSpacing: 8,
+    paddingTop: hp('1%'),
+    paddingBottom: hp('1%'),
   },
   times: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',
-    width: '100%'
+    width: '100%',
+    paddingBottom: hp('1%')
   },
   timeText: {
-    fontSize: 28,
+    fontSize: wp('6%'),
     fontWeight: 'bold',
     color: db,
   },
@@ -105,11 +106,17 @@ const styles = StyleSheet.create({
     backgroundColor: be,
     borderRadius: 10,
     padding: 5,
-    marginBottom: 5,
+    marginBottom: hp('1%'),
     alignItems: 'center',
     justifyContent: 'center',
   },
   timeContainer: {
     alignItems: 'center'
+  },
+  timeZoneText: {
+    color: be,
+    fontWeight: 'bold',
+    fontSize: wp('4%'),
+    paddingBottom: hp('1%')
   }
 });

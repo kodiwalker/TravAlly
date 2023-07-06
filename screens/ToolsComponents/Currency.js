@@ -4,6 +4,7 @@ import { View, Text, Image, TextInput, StyleSheet } from 'react-native';
 import axios from "axios";
 import { AppContext } from "../../Context";
 import { Octicons } from '@expo/vector-icons';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 export default function Currency() {
   const { homeCurrency, awayCurrency, homeFlag, setHomeFlag, awayFlag, setAwayFlag } = useContext(AppContext);
@@ -65,10 +66,10 @@ export default function Currency() {
 
   const getPickerStyle = (id) => ({
     color: db,
-    width: 100,
-    height: 40,
+    width: wp('30%'),
+    height: hp('5%'),
     borderRadius: 8,
-    fontSize: 18,
+    fontSize: wp('5%'),
     borderWidth: 3,
     borderColor: focus[id] ? '#2A9D8F' : 'white',
   });
@@ -81,26 +82,26 @@ export default function Currency() {
       <View style={styles.inputContainer}>
 
         <View style={styles.bottom}>
-          <Image source={{ uri: homeFlag }} style={{ width: 20, height: 20 }} resizeMode="contain"></Image>
+          <Image source={{ uri: homeFlag }} style={{ width: hp('2.5%'), height: hp('2.5%') }} resizeMode="contain"></Image>
           <TextInput style={getPickerStyle('picker1')} keyboardType="numeric" maxLength={10} textAlign='center' value={inputs.home} onChangeText={handleHomeConvert}
             onFocus={() => setFocus(prev => ({ ...prev, picker1: true }))}
             onBlur={() => setFocus(prev => ({ ...prev, picker1: false }))}
           ></TextInput>
 
-          <Octicons name="arrow-both" size={28} color={db} />
+          <Octicons name="arrow-both" size={wp('6%')} color={db} />
 
           <TextInput style={getPickerStyle('picker2')} keyboardType="numeric" maxLength={12} textAlign='center' value={inputs.away} onChangeText={handleAwayConvert}
             onFocus={() => setFocus(prev => ({ ...prev, picker2: true }))}
             onBlur={() => setFocus(prev => ({ ...prev, picker2: false }))}
           ></TextInput>
-          <Image source={{ uri: awayFlag }} style={{ width: 20, height: 20 }} resizeMode="contain"></Image>
+          <Image source={{ uri: awayFlag }} style={{ width: hp('2.5%'), height: hp('2.5%') }} resizeMode="contain"></Image>
         </View>
 
       </View>
 
       <View style={styles.top}>
-        <Text style={{ fontSize: 16, fontWeight: 'bold', color: be }}>{homeCurrency}</Text>
-        <Text style={{ fontSize: 16, fontWeight: 'bold', color: be }}>{awayCurrency}</Text>
+        <Text style={{ fontSize: wp('4%'), fontWeight: 'bold', color: be }}>{homeCurrency}</Text>
+        <Text style={{ fontSize: wp('4%'), fontWeight: 'bold', color: be }}>{awayCurrency}</Text>
       </View>
     </>
   )
@@ -114,14 +115,14 @@ const or = '#E76F51';
 const styles = StyleSheet.create({
   heading: {
     color: be,
-    fontSize: 28,
+    fontSize: wp('7%'),
     fontWeight: 200,
-    letterSpacing: 10,
-    paddingLeft: 10,
-    paddingTop: 5
+    letterSpacing: 8,
+    paddingLeft: wp('2.5%'),
+    paddingTop: hp('1%'),
   },
   inputContainer: {
-    width: '89%',
+    width: wp('85%'),
     justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: be,
@@ -129,14 +130,14 @@ const styles = StyleSheet.create({
   },
   bottom: {
     flexDirection: 'row',
-    width: '89%',
+    width: wp('80%'),
     justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: be,
     borderRadius: 8
   },
   top: {
-    width: '75%',
+    width: wp('75%'),
     flexDirection: 'row',
     justifyContent: 'space-around',
   },
