@@ -19,7 +19,7 @@ export default function Currency() {
   useEffect(() => {
 
     const getRates = async () => {
-      const ratesRes = await axios.post(`http://${IP}:3000/convert`, { home: homeCurrency, away: awayCurrency }, { timeout: 3000 });
+      const ratesRes = await axios.post(`https://kodiwalker.dev/convert`, { home: homeCurrency, away: awayCurrency }, { timeout: 3000 });
       setHomeRate(ratesRes.data.homeRateData.conversion_rate);
       setAwayRate(ratesRes.data.awayRateData.conversion_rate);
       setAwayFlag(ratesRes.data.homeRateData.target_data.flag_url);

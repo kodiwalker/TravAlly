@@ -7,9 +7,31 @@ import { AppContext } from "../Context";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 export default function ToolsScreen() {
-  const { homeCountry, awayCountry } = useContext(AppContext);
+  const { homeCountry, awayCountry, isLoading } = useContext(AppContext);
 
-  return (
+  return isLoading ?
+
+    <KeyboardAvoidingView style={styles.outer} behavior="position">
+      <SafeAreaView style={styles.outer}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={styles.container}>
+            <View style={styles.timeCard}>
+              {/* <Time /> */}
+            </View>
+
+            <View style={styles.currencyCard}>
+              {/* <Currency /> */}
+            </View>
+
+            <View style={styles.translateCard}>
+              {/* <Translate /> */}
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </SafeAreaView>
+    </KeyboardAvoidingView>
+    :
+
     <KeyboardAvoidingView style={styles.outer} behavior="position">
       <SafeAreaView style={styles.outer}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -29,7 +51,7 @@ export default function ToolsScreen() {
         </TouchableWithoutFeedback>
       </SafeAreaView>
     </KeyboardAvoidingView>
-  )
+
 }
 
 const bl = '#2A9D8F';
@@ -68,7 +90,7 @@ const styles = StyleSheet.create({
   translateCard: {
     backgroundColor: db,
     width: wp('90%'),
-    height: hp('30%'),
+    height: hp('32%'),
     justifyContent: 'space-around',
     alignItems: 'center',
     borderRadius: 8,

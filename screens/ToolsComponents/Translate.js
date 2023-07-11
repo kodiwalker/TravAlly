@@ -44,7 +44,7 @@ export default function Translate() {
       away: 'Translating...'
     })
     try {
-      const translated = await axios.post(`http://${IP}:3000/translate`, { text: inputs.home, target: awayLang }, { timeout: 3000 })
+      const translated = await axios.post(`https://kodiwalker.dev/translate`, { text: inputs.home, target: awayLang }, { timeout: 3000 })
 
       setInputs({
         ...inputs,
@@ -64,7 +64,7 @@ export default function Translate() {
       home: 'Translating...'
     })
     try {
-      const translated = await axios.post(`http://${IP}:3000/translate`, { text: inputs.away, target: homeLang }, { timeout: 3000 })
+      const translated = await axios.post(`https://kodiwalker.dev/translate`, { text: inputs.away, target: homeLang }, { timeout: 3000 })
 
       setInputs({
         ...inputs,
@@ -165,6 +165,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'flex-start',
-    paddingBottom: 5
+    paddingBottom: hp('1%'),
+    paddingTop: hp('1%')
   }
 });

@@ -1,24 +1,38 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { View, Text, Keyboard, StyleSheet, KeyboardAvoidingView, TouchableWithoutFeedback, SafeAreaView } from 'react-native';
 import { AppContext } from "../Context";
 import RNPickerSelect from 'react-native-picker-select';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function SettingsScreen() {
-  const { setHomeTZ, setAwayTZ, setHomeCurrency, setAwayCurrency, setHomeLang, setAwayLang, countryData, setAwayCountry, setHomeCountry } = useContext(AppContext);
+  const { setHomeTZ, setAwayTZ, homeTZ, awayTZ, setHomeCurrency, setAwayCurrency, setHomeLang, setAwayLang, countryData, setAwayCountry, setHomeCountry, homeCountryCode, setHomeCountryCode, awayCountryCode, setAwayCountryCode } = useContext(AppContext);
 
-  const [homeCountryCode, setHomeCountryCode] = useState('US');
-  const [homeTimezone, setHomeTimezone] = useState('America/Denver');
-
-  const [awayCountryCode, setAwayCountryCode] = useState('MX');
-  const [awayTimezone, setAwayTimezone] = useState('America/Cancun');
-
+  const [homeTimezone, setHomeTimezone] = useState(homeTZ);
+  const [awayTimezone, setAwayTimezone] = useState(awayTZ);
+  const [home, setHome] = useState(homeCountryCode);
+  const [away, setAway] = useState(awayCountryCode);
   const [focus, setFocus] = React.useState({});
+
+  useEffect(() => {
+    const loadState = async () => {
+      setHomeTZ(await AsyncStorage.getItem('homeTZ') || 'America/New_York');
+      setHomeTimezone(await AsyncStorage.getItem('homeTZ') || 'America/New_York');
+      setAwayTZ(await AsyncStorage.getItem('awayTZ') || 'America/Cancun');
+      setAwayTimezone(await AsyncStorage.getItem('awayTZ') || 'America/Cancun');
+      setHome(await AsyncStorage.getItem('homeCountryCode') || 'US');
+      setHomeCountryCode(await AsyncStorage.getItem('homeCountryCode') || 'US');
+      setAwayCountryCode(await AsyncStorage.getItem('awayCountryCode') || 'MX');
+      setAway(await AsyncStorage.getItem('awayCountryCode') || 'MX');
+    }
+
+    loadState();
+  }, []);
+
 
   if (!countryData) {
     return <Text>Loading...</Text>
   }
-
   const countryItems = Object.keys(countryData).map(key => ({
     label: countryData[key].name,
     value: key,
@@ -40,30 +54,51 @@ export default function SettingsScreen() {
     })).sort((a, b) => a.label.localeCompare(b.label));
   }
 
-
-  const handleHomeCountryCodeChange = (value) => {
+  const handleHomeCountryCodeChange = async (value) => {
     setHomeCountryCode(value);
+    setHome(value);
     setHomeCountry(countryData[value].name);
     setHomeLang(countryData[value].language);
     setHomeCurrency(countryData[value].currency);
+
+    await AsyncStorage.setItem('homeCountryCode', value);
+    await AsyncStorage.setItem('home', value);
+    await AsyncStorage.setItem('homeCountry', countryData[value].name);
+    await AsyncStorage.setItem('homeLang', countryData[value].language);
+    await AsyncStorage.setItem('homeCurrency', countryData[value].currency);
   }
 
-  const handleHomeTimezoneChange = (value) => {
+  const handleHomeTimezoneChange = async (value) => {
     setHomeTimezone(value);
     setHomeTZ(value);
+
+    await AsyncStorage.setItem('homeTimezone', value);
+    await AsyncStorage.setItem('homeTZ', value);
   }
 
-  const handleAwayCountryCodeChange = (value) => {
+  const handleAwayCountryCodeChange = async (value) => {
     setAwayCountryCode(value);
+    setAway(value);
     setAwayCountry(countryData[value].name);
     setAwayLang(countryData[value].language);
     setAwayCurrency(countryData[value].currency);
+
+    await AsyncStorage.setItem('awayCountryCode', value);
+    await AsyncStorage.setItem('away', value);
+    await AsyncStorage.setItem('awayCountry', countryData[value].name);
+    await AsyncStorage.setItem('awayLang', countryData[value].language);
+    await AsyncStorage.setItem('awayCurrency', countryData[value].currency);
   }
 
-  const handleAwayTimezoneChange = (value) => {
+  const handleAwayTimezoneChange = async (value) => {
     setAwayTimezone(value);
     setAwayTZ(value);
+
+    await AsyncStorage.setItem('awayTimezone', value);
+    await AsyncStorage.setItem('awayTZ', value);
   }
+
+
 
   const getPickerStyle = (id) => ({
     inputIOS: {
@@ -97,9 +132,9 @@ export default function SettingsScreen() {
                 onOpen={() => setFocus(prev => ({ ...prev, picker1: true }))}
                 onClose={() => setFocus(prev => ({ ...prev, picker1: false }))}
                 style={getPickerStyle('picker1')}
-                items={countryItems}
+                items={countryItems ? countryItems : [{ label: 'Please restart app', value: 'error' }]}
                 onValueChange={handleHomeCountryCodeChange}
-                value={homeCountryCode}
+                value={home}
                 placeholder={{}}
               />
 
@@ -124,9 +159,9 @@ export default function SettingsScreen() {
                 onOpen={() => setFocus(prev => ({ ...prev, picker3: true }))}
                 onClose={() => setFocus(prev => ({ ...prev, picker3: false }))}
                 style={getPickerStyle('picker3')}
-                items={countryItems}
+                items={countryItems ? countryItems : [{ label: 'Please restart app', value: 'error' }]}
                 onValueChange={handleAwayCountryCodeChange}
-                value={awayCountryCode}
+                value={away}
                 placeholder={{}}
               />
 
@@ -167,7 +202,6 @@ const styles = StyleSheet.create({
     fontSize: wp('7%'),
     fontWeight: 200,
     letterSpacing: 8,
-    paddingLeft: wp('2.5%'),
     paddingTop: hp('1%'),
   },
   outer: {
@@ -199,7 +233,7 @@ const styles = StyleSheet.create({
     height: hp('25%'),
     justifyContent: 'space-around',
     alignItems: 'center',
-    paddingBottom: 10,
+    paddingBottom: hp('1%'),
     borderRadius: 8,
     shadowColor: '#000',
     shadowOffset: {
@@ -245,6 +279,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     alignSelf: 'flex-start',
     paddingLeft: wp('3%'),
+    paddingBottom: hp('1%'),
     paddingTop: hp('1%'),
     fontSize: wp('3%'),
   },

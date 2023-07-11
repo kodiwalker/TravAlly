@@ -14,11 +14,15 @@ export default function Time() {
   const intervalIdRef = useRef(null);
   const timeoutIdRef = useRef(null);
 
+  const convertTimeZoneString = (str) => {
+    const parts = str.split('/');
+    return parts.slice(1).join('/').replace(/_/g, ' ');
+  }
 
   useEffect(() => {
     const fetchTimes = async () => {
       try {
-        const response = await axios.post(`http://${IP}:3000/time`, { home: homeTZ, away: awayTZ });
+        const response = await axios.post(`https://kodiwalker.dev/time`, { home: homeTZ, away: awayTZ });
         const isoTimes = response.data;
 
         const homeTime = moment(isoTimes.homeTime).format('h:mm A');
@@ -28,7 +32,7 @@ export default function Time() {
         setHomeTime(homeTime);
         setAwayTime(awayTime);
       } catch (error) {
-        console.error('Error fetching times:', error);
+        console.error('Error fetching times:', error.message);
       }
     };
 
@@ -58,7 +62,7 @@ export default function Time() {
           <View style={styles.textContainer}>
             <Text style={styles.timeText}>{homeTime}</Text>
           </View>
-          <Text style={styles.timeZoneText}>{homeTZ}</Text>
+          <Text style={styles.timeZoneText}>{convertTimeZoneString(homeTZ)}</Text>
         </View>
 
         {/* <Octicons name="arrow-both" size={28} color={be} style={{ paddingBottom: 20 }} /> */}
@@ -67,7 +71,7 @@ export default function Time() {
           <View style={styles.textContainer}>
             <Text style={styles.timeText}>{awayTime}</Text>
           </View>
-          <Text style={styles.timeZoneText}>{awayTZ}</Text>
+          <Text style={styles.timeZoneText}>{convertTimeZoneString(awayTZ)}</Text>
         </View>
 
       </View>
