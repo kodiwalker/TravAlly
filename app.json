@@ -2,8 +2,7 @@
   "expo": {
     "name": "TravAlly",
     "slug": "TravAlly",
-    "version": "1.0.2",
-    "orientation": "portrait",
+    "version": "1.0.5",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
@@ -13,9 +12,10 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true,
+      "supportsTablet": false,
+      "requiresFullScreen": true,
       "bundleIdentifier": "com.kodiwalker.TravAlly",
-      "buildNumber": "1.0.2",
+      "buildNumber": "1.0.5",
       "infoPlist": {
         "UISupportedInterfaceOrientations": [
           "UIInterfaceOrientationPortrait",

@@ -5,9 +5,11 @@ import Currency from './ToolsComponents/Currency'
 import Translate from './ToolsComponents/Translate';
 import { AppContext } from "../Context";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import * as ScreenOrientation from 'expo-screen-orientation';
 
 export default function ToolsScreen() {
   const { homeCountry, awayCountry, isLoading } = useContext(AppContext);
+  ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
 
   return isLoading ?
 

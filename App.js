@@ -15,7 +15,7 @@ import { AppContext } from './Context';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const Tab = createBottomTabNavigator();
-
+import * as ScreenOrientation from 'expo-screen-orientation';
 
 export default function App() {
   const [countryData, setCountryData] = useState();
@@ -36,6 +36,7 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
 
     const initialAPICalls = async () => {
       const countryRes = await axios.get(`https://kodiwalker.dev/countrydata`);
