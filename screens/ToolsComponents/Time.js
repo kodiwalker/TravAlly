@@ -60,18 +60,18 @@ export default function Time() {
 
         <View style={styles.timeContainer}>
           <View style={styles.textContainer}>
-            <Text style={styles.timeText}>{homeTime}</Text>
+            <Text style={styles.timeText}>{homeTime ? homeTime : '12:00 PM'}</Text>
           </View>
-          <Text style={styles.timeZoneText}>{convertTimeZoneString(homeTZ)}</Text>
+          <Text style={styles.timeZoneText}>{homeTZ ? convertTimeZoneString(homeTZ) : ''}</Text>
         </View>
 
         {/* <Octicons name="arrow-both" size={28} color={be} style={{ paddingBottom: 20 }} /> */}
 
         <View style={styles.timeContainer}>
           <View style={styles.textContainer}>
-            <Text style={styles.timeText}>{awayTime}</Text>
+            <Text style={styles.timeText}>{awayTime ? awayTime : '12:00 PM'}</Text>
           </View>
-          <Text style={styles.timeZoneText}>{convertTimeZoneString(awayTZ)}</Text>
+          <Text style={styles.timeZoneText}>{awayTZ ? convertTimeZoneString(awayTZ) : ''}</Text>
         </View>
 
       </View>

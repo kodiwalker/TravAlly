@@ -1,9 +1,12 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { View, Text, Keyboard, StyleSheet, KeyboardAvoidingView, TouchableWithoutFeedback, SafeAreaView } from 'react-native';
+import { View, Text, Keyboard, StyleSheet, KeyboardAvoidingView, TouchableWithoutFeedback, SafeAreaView, TouchableOpacity } from 'react-native';
 import { AppContext } from "../Context";
 import RNPickerSelect from 'react-native-picker-select';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Location from 'expo-location';
+import axios from 'axios';
+const username = 'kodiwalker';
 
 export default function SettingsScreen() {
   const { setHomeTZ, setAwayTZ, homeTZ, awayTZ, setHomeCurrency, setAwayCurrency, setHomeLang, setAwayLang, countryData, setAwayCountry, setHomeCountry, homeCountryCode, setHomeCountryCode, awayCountryCode, setAwayCountryCode } = useContext(AppContext);
@@ -41,7 +44,7 @@ export default function SettingsScreen() {
   let homeTimezoneItems = [];
   if (homeCountryCode) {
     homeTimezoneItems = countryData[homeCountryCode].timezones.map(tz => ({
-      label: tz.name,
+      label: tz.name.replace(/_/g, ' '),
       value: tz.name,
     })).sort((a, b) => a.label.localeCompare(b.label));
   }
@@ -49,7 +52,7 @@ export default function SettingsScreen() {
   let awayTimezoneItems = [];
   if (awayCountryCode) {
     awayTimezoneItems = countryData[awayCountryCode].timezones.map(tz => ({
-      label: tz.name,
+      label: tz.name.replace(/_/g, ' '),
       value: tz.name,
     })).sort((a, b) => a.label.localeCompare(b.label));
   }
@@ -98,7 +101,47 @@ export default function SettingsScreen() {
     await AsyncStorage.setItem('awayTZ', value);
   }
 
+  const setHomeCurrentLocation = async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== 'granted') {
+      alert('Permission to access location was denied');
+      return;
+    }
 
+    let location = await Location.getCurrentPositionAsync({});
+    const { latitude, longitude } = location.coords;
+
+    const response = await axios.get(`http://api.geonames.org/countryCodeJSON?lat=${latitude}&lng=${longitude}&username=${username}`);
+    const country = response.data.countryName;
+    const countryCode = response.data.countryCode;
+
+    const timezoneResponse = await axios.get(`http://api.geonames.org/timezoneJSON?lat=${latitude}&lng=${longitude}&username=${username}`);
+    const timezone = timezoneResponse.data.timezoneId;
+
+    handleHomeCountryCodeChange(countryCode);
+    handleHomeTimezoneChange(timezone);
+  }
+
+  const setAwayCurrentLocation = async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== 'granted') {
+      alert('Permission to access location was denied');
+      return;
+    }
+
+    let location = await Location.getCurrentPositionAsync({});
+    const { latitude, longitude } = location.coords;
+
+    const response = await axios.get(`http://api.geonames.org/countryCodeJSON?lat=${latitude}&lng=${longitude}&username=${username}`);
+    const country = response.data.countryName;
+    const countryCode = response.data.countryCode;
+
+    const timezoneResponse = await axios.get(`http://api.geonames.org/timezoneJSON?lat=${latitude}&lng=${longitude}&username=${username}`);
+    const timezone = timezoneResponse.data.timezoneId;
+
+    handleAwayCountryCodeChange(countryCode);
+    handleAwayTimezoneChange(timezone);
+  }
 
   const getPickerStyle = (id) => ({
     inputIOS: {
@@ -127,7 +170,14 @@ export default function SettingsScreen() {
             <View style={styles.homeCard}>
               <Text style={styles.heading}>Home</Text>
 
-              <Text style={styles.labelText}>Country</Text>
+              <View style={styles.topLabels}>
+                <Text style={styles.labelText}>Country</Text>
+
+                <TouchableOpacity onPress={setHomeCurrentLocation} >
+                  <Text style={styles.locationText}>Use Current Location</Text>
+                </TouchableOpacity>
+              </View>
+
               <RNPickerSelect
                 onOpen={() => setFocus(prev => ({ ...prev, picker1: true }))}
                 onClose={() => setFocus(prev => ({ ...prev, picker1: false }))}
@@ -154,7 +204,13 @@ export default function SettingsScreen() {
             <View style={styles.awayCard}>
               <Text style={styles.heading}>Away</Text>
 
-              <Text style={styles.labelText}>Country</Text>
+              <View style={styles.topLabels}>
+                <Text style={styles.labelText}>Country</Text>
+
+                <TouchableOpacity onPress={setAwayCurrentLocation} >
+                  <Text style={styles.locationText}>Use Current Location</Text>
+                </TouchableOpacity>
+              </View>
               <RNPickerSelect
                 onOpen={() => setFocus(prev => ({ ...prev, picker3: true }))}
                 onClose={() => setFocus(prev => ({ ...prev, picker3: false }))}
@@ -281,9 +337,21 @@ const styles = StyleSheet.create({
     paddingLeft: wp('3%'),
     paddingBottom: hp('1%'),
     paddingTop: hp('1%'),
-    fontSize: wp('3%'),
+    fontSize: wp('4%'),
   },
-  text: {
-    color: be,
+  locationText: {
+    color: bl,
+    fontWeight: 'bold',
+    alignSelf: 'flex-start',
+    paddingLeft: wp('3%'),
+    paddingBottom: hp('1%'),
+    paddingTop: hp('1%'),
+    fontSize: wp('4%'),
   },
+  topLabels: {
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'space-between',
+    paddingRight: wp('3%'),
+  }
 });

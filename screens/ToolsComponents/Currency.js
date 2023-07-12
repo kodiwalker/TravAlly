@@ -7,9 +7,10 @@ import { Octicons } from '@expo/vector-icons';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 export default function Currency() {
+  const placeholder = 'https://api.exchangerate-api.com/flag-images/US.gif';
   const { homeCurrency, awayCurrency, homeFlag, setHomeFlag, awayFlag, setAwayFlag } = useContext(AppContext);
-  const [homeRate, setHomeRate] = useState();
-  const [awayRate, setAwayRate] = useState();
+  const [homeRate, setHomeRate] = useState(1);
+  const [awayRate, setAwayRate] = useState(1);
   const [focus, setFocus] = React.useState({});
   const [inputs, setInputs] = useState({
     home: '',
@@ -82,7 +83,7 @@ export default function Currency() {
       <View style={styles.inputContainer}>
 
         <View style={styles.bottom}>
-          <Image source={{ uri: homeFlag }} style={{ width: hp('2.5%'), height: hp('2.5%') }} resizeMode="contain"></Image>
+          <Image source={homeFlag ? { uri: homeFlag } : { uri: placeholder }} style={{ width: hp('2.5%'), height: hp('2.5%') }} resizeMode="contain"></Image>
           <TextInput style={getPickerStyle('picker1')} keyboardType="numeric" maxLength={10} textAlign='center' value={inputs.home} onChangeText={handleHomeConvert}
             onFocus={() => setFocus(prev => ({ ...prev, picker1: true }))}
             onBlur={() => setFocus(prev => ({ ...prev, picker1: false }))}
@@ -94,10 +95,10 @@ export default function Currency() {
             onFocus={() => setFocus(prev => ({ ...prev, picker2: true }))}
             onBlur={() => setFocus(prev => ({ ...prev, picker2: false }))}
           ></TextInput>
-          <Image source={{ uri: awayFlag }} style={{ width: hp('2.5%'), height: hp('2.5%') }} resizeMode="contain"></Image>
+          <Image source={awayFlag ? { uri: awayFlag } : { uri: placeholder }} style={{ width: hp('2.5%'), height: hp('2.5%') }} resizeMode="contain"></Image>
         </View>
 
-      </View>
+      </View >
 
       <View style={styles.top}>
         <Text style={{ fontSize: wp('4%'), fontWeight: 'bold', color: be }}>{homeCurrency}</Text>
