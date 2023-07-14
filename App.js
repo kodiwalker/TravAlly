@@ -2,7 +2,7 @@ import { IP } from '@env';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useState, useEffect } from 'react';
-import { StatusBar, Image, View, StyleSheet } from 'react-native';
+import { StatusBar, Image, View, StyleSheet, Text, TextInput } from 'react-native';
 import ToolsScreen from './screens/ToolsScreen';
 import GuideScreen from './screens/GuideScreen';
 import SettingsScreen from './screens/SettingsScreen';
@@ -37,6 +37,10 @@ export default function App() {
 
   useEffect(() => {
     ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
+    Text.defaultProps = Text.defaultProps || {};
+    Text.defaultProps.allowFontScaling = false;
+    TextInput.defaultProps = TextInput.defaultProps || {};
+    TextInput.defaultProps.allowFontScaling = false;
 
     const initialAPICalls = async () => {
       const countryRes = await axios.get(`https://kodiwalker.dev/countrydata`);

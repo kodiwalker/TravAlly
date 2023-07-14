@@ -130,7 +130,7 @@ export default function Translate() {
 
         <View>
           <AntDesign name="back" size={wp('8%')} style={{ color: be, transform: [{ rotate: '90deg' }] }} />
-          <MaterialCommunityIcons name="text-to-speech" size={wp('8%')} color={bl} onPress={handleSpeech} />
+          <MaterialCommunityIcons name="volume-high" size={wp('8%')} color={bl} onPress={handleSpeech} />
         </View>
 
       </View>
