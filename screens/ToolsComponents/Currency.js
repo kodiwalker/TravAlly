@@ -84,14 +84,14 @@ export default function Currency() {
 
         <View style={styles.bottom}>
           <Image source={homeFlag ? { uri: homeFlag } : { uri: placeholder }} style={{ width: hp('2.5%'), height: hp('2.5%') }} resizeMode="contain"></Image>
-          <TextInput style={getPickerStyle('picker1')} keyboardType="numeric" maxLength={10} textAlign='center' value={inputs.home} onChangeText={handleHomeConvert}
+          <TextInput style={getPickerStyle('picker1')} keyboardType="numeric" maxLength={10} textAlign='center' value={inputs.home} onChangeText={handleHomeConvert} inputMode="numeric" selectTextOnFocus={true}
             onFocus={() => setFocus(prev => ({ ...prev, picker1: true }))}
             onBlur={() => setFocus(prev => ({ ...prev, picker1: false }))}
           ></TextInput>
 
           <Octicons name="arrow-both" size={wp('6%')} color={db} />
 
-          <TextInput style={getPickerStyle('picker2')} keyboardType="numeric" maxLength={12} textAlign='center' value={inputs.away} onChangeText={handleAwayConvert}
+          <TextInput style={getPickerStyle('picker2')} keyboardType="numeric" maxLength={12} textAlign='center' value={inputs.away} onChangeText={handleAwayConvert} selectTextOnFocus={true}
             onFocus={() => setFocus(prev => ({ ...prev, picker2: true }))}
             onBlur={() => setFocus(prev => ({ ...prev, picker2: false }))}
           ></TextInput>

@@ -4,9 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useState, useEffect } from 'react';
 import { StatusBar, Image, View, StyleSheet, Text, TextInput } from 'react-native';
 import ToolsScreen from './screens/ToolsScreen';
-import GuideScreen from './screens/GuideScreen';
 import SettingsScreen from './screens/SettingsScreen';
-import PlacesScreen from "./screens/PlacesScreen";
 import axios from "axios";
 import { Entypo } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -94,22 +92,6 @@ export default function App() {
               options={{
                 tabBarIcon: ({ color }) => (
                   <Entypo name="tools" color={color} size={42} />
-                )
-              }}
-            />
-
-            <Tab.Screen name="Guide" component={GuideScreen}
-              options={{
-                tabBarIcon: ({ color }) => (
-                  <MaterialCommunityIcons name="assistant" size={42} color={color} />
-                )
-              }}
-            />
-
-            <Tab.Screen name="Places" component={PlacesScreen}
-              options={{
-                tabBarIcon: ({ color }) => (
-                  <Entypo name="location" size={42} color={color} />
                 )
               }}
             />

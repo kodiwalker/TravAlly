@@ -111,7 +111,7 @@ export default function Translate() {
         <View style={styles.inputContainer}>
           <Text style={{ fontSize: wp('4%'), fontWeight: 'bold', color: be, marginBottom: 5 }}>{iso6391.getName(homeLang)}</Text>
 
-          <TextInput style={getPickerStyle('picker1')} maxLength={300} multiline={true} onSubmitEditing={handleHomeTranslate} returnKeyType='done' blurOnSubmit={true} value={inputs.home} onChangeText={handleHomeChange}
+          <TextInput style={getPickerStyle('picker1')} maxLength={300} multiline={true} onSubmitEditing={handleHomeTranslate} returnKeyType='done' blurOnSubmit={true} value={inputs.home} onChangeText={handleHomeChange} selectTextOnFocus={true}
             onFocus={() => setFocus(prev => ({ ...prev, picker1: true }))}
             onBlur={() => setFocus(prev => ({ ...prev, picker1: false }))}
           ></TextInput>
@@ -120,7 +120,7 @@ export default function Translate() {
 
       <View style={styles.awayField}>
         <View style={styles.inputContainer}>
-          <TextInput style={getPickerStyle('picker2')} maxLength={300} multiline={true} onSubmitEditing={handleAwayTranslate} returnKeyType='done' blurOnSubmit={true} value={inputs.away} onChangeText={handleAwayChange} autoCorrect={false}
+          <TextInput style={getPickerStyle('picker2')} maxLength={300} multiline={true} onSubmitEditing={handleAwayTranslate} returnKeyType='done' blurOnSubmit={true} value={inputs.away} onChangeText={handleAwayChange} autoCorrect={false} selectTextOnFocus={true}
             onFocus={() => setFocus(prev => ({ ...prev, picker2: true }))}
             onBlur={() => setFocus(prev => ({ ...prev, picker2: false }))}
           ></TextInput>

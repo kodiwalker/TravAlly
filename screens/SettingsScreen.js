@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { View, Text, Keyboard, StyleSheet, KeyboardAvoidingView, TouchableWithoutFeedback, SafeAreaView, TouchableOpacity } from 'react-native';
+import { View, Text, Keyboard, StyleSheet, KeyboardAvoidingView, TouchableWithoutFeedback, SafeAreaView, TouchableOpacity, Linking } from 'react-native';
 import { AppContext } from "../Context";
 import RNPickerSelect from 'react-native-picker-select';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -234,12 +234,12 @@ export default function SettingsScreen() {
               />
             </View>
 
-            {/* <View style={styles.accountCard}>
-            <Text style={styles.heading}>Account</Text>
-          </View> */}
 
           </View>
         </TouchableWithoutFeedback>
+
+        <TouchableOpacity onPress={() => Linking.openURL('https://sites.google.com/view/travally/')}><Text style={styles.report}>Report a Bug</Text></TouchableOpacity>
+
       </SafeAreaView>
     </KeyboardAvoidingView>
   )
@@ -353,5 +353,11 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'space-between',
     paddingRight: wp('3%'),
+  },
+  report: {
+    paddingBottom: hp('1%'),
+    fontSize: wp('5%'),
+    color: db
+
   }
 });
